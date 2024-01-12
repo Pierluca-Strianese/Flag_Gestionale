@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ClienteController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Guests\PageController as GuestsPageController;
 
@@ -21,8 +23,11 @@ Route::get('/', [GuestsPageController::class, 'home'])->name('guests.home');
 Route::get('/dashboard', [AdminPageController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('admin.dashboard');
 
 Route::middleware(['auth', 'verified'])
-    ->get('/dashboard', [AdminPageController::class, 'dashboard'])
-    ->name('admin.dashboard');
+    ->name('dashboard.')
+    ->prefix('dashboard')
+    ->group(function () {
+        Route::resource('customers', CustomerController::class);
+    });
 
 Route::middleware('auth')
     ->name('admin.')

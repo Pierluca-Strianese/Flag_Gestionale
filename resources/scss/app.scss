@@ -1,1 +1,78 @@
 @import "~bootstrap/scss/bootstrap";
+
+main {
+    width: 80vw;
+    margin-inline: auto;
+}
+
+.button_month_passed {
+    background-color: lightcyan;
+    color: white;
+    width: calc((100% - 10px) / 3);
+    height: 3rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-inline: 2px;
+}
+
+.button_month_missing {
+    background-color: lightcyan;
+    color: white;
+    width: calc((100% - 36px) / 9);
+    height: 3rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-inline: 2px;
+}
+
+.button_month_missing.pagata {
+    background-color: lightgreen;
+    color: white;
+}
+
+.button_month_missing.non_pagata {
+    background-color: lightcoral;
+    color: white;
+}
+
+.button_month_passed.pagata {
+    background-color: lightgreen;
+    color: white;
+}
+
+.button_month_passed.non_pagata {
+    background-color: lightcoral;
+    color: white;
+}
+
+.button_month_name {
+    width: calc((100% - 36px) / 9);
+    text-align: center;
+
+    margin-inline: 2px;
+}
+
+.button_month_name_passed {
+    width: calc((100% - 10px) / 3);
+    text-align: center;
+
+    margin-inline: 2px;
+}
+
+.button_month_empty_passed {
+    background-color: rgb(209, 209, 209);
+    width: calc((100% - 10px) / 3);
+    margin-inline: 2px;
+}
+
+.button_month_empty {
+    background-color: rgb(209, 209, 209);
+    width: calc((100% - 36px) / 9);
+    margin-inline: 2px;
+}
