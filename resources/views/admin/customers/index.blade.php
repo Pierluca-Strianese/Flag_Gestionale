@@ -54,11 +54,14 @@
                                         $key = 'rata_' . ($customer->mesi_trascorsi_contratto - ($i - 1));
                                         $rata = $ratePagate[$key] ?? null;
                                         $rataPagata = is_array($rata) && isset($rata['pagata']) ? $rata['pagata'] : false;
+                                        $dataPagamento = is_array($rata) && isset($rata['data_pagamento']) ? $rata['data_pagamento'] : null;
                                     @endphp
 
                                     @if ($i <= $customer->mesi_trascorsi_contratto)
                                         <div class="button_month_passed {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
-                                            {{ $customer->mesi_trascorsi_contratto - ($i - 1) }}
+                                            @if ($dataPagamento)
+                                                {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
+                                            @endif
                                         </div>
                                     @else
                                         <div class="button_month_empty_passed"></div>
@@ -74,11 +77,14 @@
                                         $key = 'rata_' . ($customer->mesi_trascorsi_contratto + $i);
                                         $rata = $ratePagate[$key] ?? null;
                                         $rataPagata = is_array($rata) && isset($rata['pagata']) ? $rata['pagata'] : false;
+                                        $dataPagamento = is_array($rata) && isset($rata['data_pagamento']) ? $rata['data_pagamento'] : null;
                                     @endphp
 
                                     @if ($i <= $customer->mesi_mancanti_contratto)
                                         <div class="button_month_missing {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
-                                            {{ $customer->mesi_trascorsi_contratto + $i }}
+                                            @if ($dataPagamento)
+                                                {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
+                                            @endif
                                         </div>
                                     @else
                                         <div class="button_month_empty"></div>

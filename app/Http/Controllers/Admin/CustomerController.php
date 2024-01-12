@@ -75,8 +75,8 @@ class CustomerController extends Controller
             // Creazione dell'array delle rate pagate
             for ($i = 1; $i <= $data['durata_contratto_mesi']; $i++) {
                 $ratePagate["rata_$i"] = [
-                    'importo' => isset($data['rate']["rata_$i"]) ? $data['rate']["rata_$i"] : null,
-                    'pagata' => isset($data['rate_pagate']["rata_$i"]) ? true : false,
+                    'pagata' => isset($data['rate_pagate']["rata_$i"]["pagata"]) ? true : false,
+                    'data_pagamento' => isset($data['rate_pagate']["rata_$i"]["data_pagamento"]) ? $data['rate_pagate']["rata_$i"]["data_pagamento"] : null,
                 ];
             }
         }
@@ -134,13 +134,13 @@ class CustomerController extends Controller
             // Creazione dell'array delle rate pagate
             for ($i = 1; $i <= $data['durata_contratto_mesi']; $i++) {
                 $ratePagate["rata_$i"] = [
-                    'importo' => isset($data['rate']["rata_$i"]) ? $data['rate']["rata_$i"] : null,
-                    'pagata' => isset($data['rate_pagate']["rata_$i"]) ? true : false,
+                    'pagata' => isset($data['rate_pagate']["rata_$i"]["pagata"]) ? true : false,
+                    'data_pagamento' => isset($data['rate_pagate']["rata_$i"]["data_pagamento"]) ? $data['rate_pagate']["rata_$i"]["data_pagamento"] : null,
                 ];
             }
         }
 
-        $newCustomer->rate_pagate = $ratePagate;
+        $customer->rate_pagate = json_encode($ratePagate);
 
         $customer->update($data);
 

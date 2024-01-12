@@ -232,7 +232,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3 row" id="rate-container"></div>
+                <div class="mt-5 mb-5 d-flex justify-content-center flex-wrap" id="rate-container"></div>
 
                 <div class="mb-3">
                     <label for="note" class="form-label ps-2">Note</label>
@@ -290,17 +290,18 @@
                     checkbox.className = 'form-check-input';
                     checkbox.checked = isRatePagata(`rata_${i}`, rateObject); // Controlla se la rata è stata pagata
 
-                    const input = document.createElement('input');
-                    input.type = 'date';
-                    input.name = `rate[rata_${i}][data]`;
-                    input.className = 'form-control';
-                    input.value = getDateForRate(`rata_${i}`, rateObject);
+                    // Aggiunto un campo di input per la data di pagamento
+                    const dateInput = document.createElement('input');
+                    dateInput.type = 'date';
+                    dateInput.name = `rate_pagate[rata_${i}][data_pagamento]`;
+                    dateInput.value = getDateForRate(`rata_${i}`,
+                        rateObject); // Imposta la data di pagamento se presente
 
                     const div = document.createElement('div');
-                    div.className = 'col-2 m-2 form-check';
-                    div.appendChild(label);
-                    div.appendChild(input);
+                    div.className = 'col-4 form-check input_rata';
                     div.appendChild(checkbox);
+                    div.appendChild(label);
+                    div.appendChild(dateInput);
                     rateContainer.appendChild(div);
                     // ...
 

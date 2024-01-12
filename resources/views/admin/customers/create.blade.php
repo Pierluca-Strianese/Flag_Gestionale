@@ -268,19 +268,22 @@
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.name = `rate_pagate[rata_${i}]`;
+                    checkbox.name = `rate_pagate[rata_${i}][pagata]`;
                     checkbox.className = 'form-check-input';
 
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.name = `rate[rata_${i}]`;
-                    input.className = 'form-control';
+                    // Aggiungi un campo di input per la data di pagamento
+                    const dateInput = document.createElement('input');
+                    dateInput.type = 'date';
+                    dateInput.name = `rate_pagate[rata_${i}][data_pagamento]`;
+                    dateInput.className = 'form-control'; // Modifica la classe a seconda del tuo stile
+                    dateInput.placeholder = 'Data pagamento';
 
                     const div = document.createElement('div');
-                    div.className = 'col-2 m-2 form-check';
+                    div.className =
+                    'col-3 m-2 form-check'; // Modifica la classe a seconda del tuo stile
                     div.appendChild(label);
-                    div.appendChild(input);
                     div.appendChild(checkbox);
+                    div.appendChild(dateInput);
 
                     rateContainer.appendChild(div);
                 }

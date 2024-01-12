@@ -76,3 +76,21 @@ main {
     width: calc((100% - 36px) / 9);
     margin-inline: 2px;
 }
+
+.input_rata {
+    display: flex;
+    align-items: center;
+
+    label {
+        padding: 1rem;
+    }
+
+    input {
+        padding: .5rem;
+    }
+}
+
+.form-check .form-check-input {
+    float: left;
+    margin-left: 0;
+}
