@@ -81,7 +81,7 @@ class CustomerController extends Controller
             }
         }
 
-$newCustomer->rate_pagate = $ratePagate;
+        $newCustomer->rate_pagate = $ratePagate;
 
         $newCustomer->save();
 
@@ -140,7 +140,7 @@ $newCustomer->rate_pagate = $ratePagate;
             }
         }
 
-        $customer->rate_pagate = $ratePagate;
+        $newCustomer->rate_pagate = $ratePagate;
 
         $customer->update($data);
 

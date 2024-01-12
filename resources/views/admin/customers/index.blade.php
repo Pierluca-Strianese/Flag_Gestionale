@@ -51,7 +51,8 @@
                                 @for ($i = 1; $i <= 3; $i++)
                                     @php
                                         $ratePagate = $customer->rate_pagate ?? [];
-                                        $rata = $ratePagate["rata_$i"] ?? null;
+                                        $key = 'rata_' . ($customer->mesi_trascorsi_contratto - ($i - 1));
+                                        $rata = $ratePagate[$key] ?? null;
                                         $rataPagata = is_array($rata) && isset($rata['pagata']) ? $rata['pagata'] : false;
                                     @endphp
 
@@ -70,7 +71,8 @@
                                 @for ($i = 1; $i <= 9; $i++)
                                     @php
                                         $ratePagate = $customer->rate_pagate ?? [];
-                                        $rata = $ratePagate["rata_$i"] ?? null;
+                                        $key = 'rata_' . ($customer->mesi_trascorsi_contratto + $i);
+                                        $rata = $ratePagate[$key] ?? null;
                                         $rataPagata = is_array($rata) && isset($rata['pagata']) ? $rata['pagata'] : false;
                                     @endphp
 

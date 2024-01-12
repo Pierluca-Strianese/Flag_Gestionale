@@ -291,9 +291,10 @@
                     checkbox.checked = isRatePagata(`rata_${i}`, rateObject); // Controlla se la rata è stata pagata
 
                     const input = document.createElement('input');
-                    input.type = 'text';
-                    input.name = `rate[rata_${i}][importo]`;
+                    input.type = 'date';
+                    input.name = `rate[rata_${i}][data]`;
                     input.className = 'form-control';
+                    input.value = getDateForRate(`rata_${i}`, rateObject);
 
                     const div = document.createElement('div');
                     div.className = 'col-2 m-2 form-check';
@@ -301,6 +302,11 @@
                     div.appendChild(input);
                     div.appendChild(checkbox);
                     rateContainer.appendChild(div);
+                    // ...
+
+                    function getDateForRate(rata, rateObject) {
+                        return rateObject && rateObject[rata] && rateObject[rata].data ? rateObject[rata].data : '';
+                    }
                 }
             }
 
