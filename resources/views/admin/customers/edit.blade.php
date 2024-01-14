@@ -294,7 +294,7 @@
                     const dateInput = document.createElement('input');
                     dateInput.type = 'date';
                     dateInput.name = `rate_pagate[rata_${i}][data_pagamento]`;
-                    dateInput.value = getDateForRate(`rata_${i}`,
+                    dateInput.defaultValue = getDateForRate(`rata_${i}`,
                         rateObject); // Imposta la data di pagamento se presente
 
                     const div = document.createElement('div');
@@ -304,11 +304,11 @@
                     div.appendChild(dateInput);
                     rateContainer.appendChild(div);
                     // ...
-
-                    function getDateForRate(rata, rateObject) {
-                        return rateObject && rateObject[rata] && rateObject[rata].data ? rateObject[rata].data : '';
-                    }
                 }
+            }
+
+            function getDateForRate(rata, rateObject) {
+                return rateObject && rateObject[rata] && rateObject[rata].data ? rateObject[rata].data : '';
             }
 
             function isRatePagata(rata, rateObject) {
