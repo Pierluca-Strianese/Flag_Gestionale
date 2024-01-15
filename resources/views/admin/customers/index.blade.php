@@ -57,37 +57,44 @@
                                         $dataPagamento = is_array($rata) && isset($rata['data_pagamento']) ? $rata['data_pagamento'] : null;
                                     @endphp
 
-                                    @if ($i <= $customer->mesi_trascorsi_contratto)
+                                    @if ($customer->mesi_trascorsi_contratto == 0)
+                                        <div class="button_month_empty_passed"></div>
+                                    @else
                                         <div class="button_month_passed {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
                                             @if ($dataPagamento)
                                                 {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
                                             @endif
                                         </div>
-                                    @else
-                                        <div class="button_month_empty_passed"></div>
                                     @endif
                                 @endfor
                             </div>
                         </td>
                         <td>
-                            <div class="d-flex justify-content-start">
-                                @for ($i = 1; $i <= 9; $i++)
+                            <div class="d-flex justify-content-start flex-nowrap">
+                                @php
+                                    $ratePagate = $customer->rate_pagate ?? [];
+                                    $mesiTrascorsi = $customer->mesi_trascorsi_contratto;
+                                    $mesiMancanti = $customer->mesi_mancanti_contratto;
+                                    $mesiMancantiAllInizio = $customer->mesi_mancanti_all_inizio ?? 0;
+                                    $maxDivs = 9;
+                                @endphp
+
+                                @for ($i = 1; $i <= $maxDivs; $i++)
                                     @php
-                                        $ratePagate = $customer->rate_pagate ?? [];
-                                        $key = 'rata_' . ($customer->mesi_trascorsi_contratto + $i);
+                                        $key = 'rata_' . ($mesiTrascorsi + $i);
                                         $rata = $ratePagate[$key] ?? null;
                                         $rataPagata = is_array($rata) && isset($rata['pagata']) ? $rata['pagata'] : false;
                                         $dataPagamento = is_array($rata) && isset($rata['data_pagamento']) ? $rata['data_pagamento'] : null;
                                     @endphp
 
-                                    @if ($i <= $customer->mesi_mancanti_contratto)
+                                    @if ($i <= $mesiMancantiAllInizio || $i > $mesiMancantiAllInizio + $mesiMancanti)
+                                        <div class="button_month_empty"></div>
+                                    @else
                                         <div class="button_month_missing {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
                                             @if ($dataPagamento)
                                                 {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
                                             @endif
                                         </div>
-                                    @else
-                                        <div class="button_month_empty"></div>
                                     @endif
                                 @endfor
                             </div>
@@ -95,7 +102,7 @@
                         <td class="text-end">
                             <a class="btn btn-secondary m-1"
                                 href="{{ route('dashboard.customers.edit', ['customer' => $customer]) }}">
-                                <i class="fa-solid fa-pen-to-square"></i> Modifica
+                                <i class="fa-solid fa-pen-to-square"></i> MODIFICA
                             </a>
                         </td>
                     </tr>

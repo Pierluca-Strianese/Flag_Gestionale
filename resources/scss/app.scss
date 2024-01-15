@@ -1,5 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 
+// Font Awesome
+@import "node_modules/font-awesome/scss/font-awesome";
+
 main {
     width: 80vw;
     margin-inline: auto;
@@ -7,7 +10,7 @@ main {
 
 .button_month_passed {
     background-color: lightcyan;
-    color: white;
+    color: rgb(0, 111, 19);
     width: calc((100% - 10px) / 3);
     height: 3rem;
 
@@ -33,22 +36,26 @@ main {
 
 .button_month_missing.pagata {
     background-color: lightgreen;
-    color: white;
+    color: rgb(0, 111, 19);
+    font-weight: bold;
 }
 
 .button_month_missing.non_pagata {
     background-color: lightcoral;
     color: white;
+    font-weight: bold;
 }
 
 .button_month_passed.pagata {
     background-color: lightgreen;
-    color: white;
+    color: rgb(0, 111, 19);
+    font-weight: bold;
 }
 
 .button_month_passed.non_pagata {
     background-color: lightcoral;
     color: white;
+    font-weight: bold;
 }
 
 .button_month_name {
@@ -68,6 +75,7 @@ main {
 .button_month_empty_passed {
     background-color: rgb(209, 209, 209);
     width: calc((100% - 10px) / 3);
+    height: 3rem;
     margin-inline: 2px;
 }
 

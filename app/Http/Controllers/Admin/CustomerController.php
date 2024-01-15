@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class CustomerController extends Controller
 {
 
-    public function index()
+   public function index()
     {
         $customers = Customer::paginate(10);
 
@@ -19,12 +19,34 @@ class CustomerController extends Controller
             $dataInizioContratto = Carbon::createFromFormat('Y-m-d', $customer->data_inizio_contratto);
             $dataFineContratto = $dataInizioContratto->copy()->addMonths($customer->durata_contratto_mesi);
 
-            $differenzaMesi = $dataInizioContratto->diffInMonths(Carbon::now());
-            $mesiMancanti = $customer->durata_contratto_mesi - $differenzaMesi;
+            $now = Carbon::now();
+
+            if ($now < $dataInizioContratto) {
+                // Contratto ancora non iniziato
+                $differenzaMesi = 0;
+                $mesiMancanti = $customer->durata_contratto_mesi;
+                $mesiMancantiAllInizio = $now->diffInMonths($dataInizioContratto);
+                if ($now->format('d') > $dataInizioContratto->format('d')) {
+                    $mesiMancantiAllInizio += 1;
+                }
+            } else {
+                // Contratto già in corso
+                $differenzaGiorni = $dataInizioContratto->diffInDays($now);
+                if ($now->format('m') != $dataInizioContratto->format('m')) {
+                    $differenzaMesi = 1;
+                } else {
+                    $differenzaMesi = $differenzaGiorni > 30 ? 1 : 0;
+                }
+                $mesiMancanti = ($customer->durata_contratto_mesi - $differenzaMesi);
+                $mesiMancantiAllInizio = 0;
+
+                $mesiTrascorsiContratto = $dataInizioContratto->diffInMonths($now);
+            }
 
             $customer->data_fine_contratto = $dataFineContratto;
-            $customer->mesi_trascorsi_contratto = $differenzaMesi;
-            $customer->mesi_mancanti_contratto = $mesiMancanti;
+            $customer->mesi_trascorsi_contratto = isset($mesiTrascorsiContratto) ? $mesiTrascorsiContratto : 0;
+            $customer->mesi_mancanti_contratto = $customer->durata_contratto_mesi - $customer->mesi_trascorsi_contratto;
+            $customer->mesi_mancanti_all_inizio = $mesiMancantiAllInizio;
 
             $customer->save();
         }
@@ -46,7 +68,6 @@ class CustomerController extends Controller
         // Salvare i dati nel database
         $newCustomer = new Customer();
         $newCustomer->NomeAzienda             = $data['NomeAzienda'];
-        $newCustomer->CF                      = $data['CF'];
         $newCustomer->PIVA                    = $data['PIVA'];
         $newCustomer->indirizzo               = $data['indirizzo'];
         $newCustomer->n_civico                = $data['n_civico'];
@@ -54,8 +75,6 @@ class CustomerController extends Controller
         $newCustomer->citta                   = $data['citta'];
         $newCustomer->provincia               = $data['provincia'];
         $newCustomer->nazione                 = $data['nazione'];
-        $newCustomer->MetodoPagamento         = $data['MetodoPagamento'];
-        $newCustomer->IBAN                    = $data['IBAN'];
         $newCustomer->note                    = $data['note'];
 
         $newCustomer->pagamento_tot           = $data['pagamento_tot'];
@@ -64,7 +83,7 @@ class CustomerController extends Controller
 
         $formattedCreatedAt = Carbon::now()->format('d/m/Y');
         list($day, $month, $year) = explode('/', $formattedCreatedAt);
-        $newCustomer->data = Carbon::create($year, $month, $day);
+        $newCustomer->data = Carbon::createFromFormat('d/m/Y', $formattedCreatedAt);
 
         $newCustomer->data_inizio_contratto   = $data['data_inizio_contratto'];
         $newCustomer->durata_contratto_mesi   = $data['durata_contratto_mesi'];
@@ -105,7 +124,6 @@ class CustomerController extends Controller
         $data = $request->all();
 
         $customer->NomeAzienda             = $data['NomeAzienda'];
-        $customer->CF                      = $data['CF'];
         $customer->PIVA                    = $data['PIVA'];
         $customer->indirizzo               = $data['indirizzo'];
         $customer->n_civico                = $data['n_civico'];
@@ -113,8 +131,6 @@ class CustomerController extends Controller
         $customer->citta                   = $data['citta'];
         $customer->provincia               = $data['provincia'];
         $customer->nazione                 = $data['nazione'];
-        $customer->MetodoPagamento         = $data['MetodoPagamento'];
-        $customer->IBAN                    = $data['IBAN'];
         $customer->note                    = $data['note'];
 
         $customer->pagamento_tot           = $data['pagamento_tot'];
@@ -140,7 +156,8 @@ class CustomerController extends Controller
             }
         }
 
-        $customer->rate_pagate = json_encode($ratePagate);
+        // Aggiorna solo i valori delle rate_pagate invece di sovrascrivere l'intero campo
+        $customer->rate_pagate = array_merge($customer->rate_pagate ?? [], $ratePagate);
 
         $customer->update($data);
 

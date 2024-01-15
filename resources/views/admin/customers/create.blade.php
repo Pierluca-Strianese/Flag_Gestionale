@@ -23,16 +23,6 @@
 
                 <div class="mb-3 row">
                     <div class="col-6">
-                        <label for="CF" class="form-label ps-2">Codice Fiscale</label>
-                        <input type="text" class="form-control @error('CF') is-invalid @enderror" id="CF"
-                            name="CF" value="{{ old('CF') }}">
-                        <div class="invalid-feedback">
-                            @error('CF')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-6">
                         <div class="mb-3">
                             <label for="PIVA" class="form-label ps-2">P.IVA</label>
                             <input type="text" class="form-control @error('PIVA') is-invalid @enderror" id="PIVA"
@@ -135,36 +125,6 @@
 
             <section class="container-sm bg-body-secondary p-4 my-4 rounded col-8">
                 <h3 class="border-bottom mb-4 pb-2">Pagamento</h3>
-                <div class="mb-3 row">
-                    <div class="col-6">
-                        <label for="IBAN" class="form-label ps-2">IBAN</label>
-                        <input type="text" class="form-control @error('IBAN') is-invalid @enderror" id="IBAN"
-                            name="IBAN" value="{{ old('IBAN') }}">
-                        <div class="invalid-feedback">
-                            @error('IBAN')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <label for="MetodoPagamento" class="form-label ps-2">Metodo di pagamento</label>
-                        <select class="form-select" aria-label="Default select example"
-                            @error('MetodoPagamento') is-invalid @enderror id="MetodoPagamento" name="MetodoPagamento"
-                            value="{{ old('MetodoPagamento') }}">
-                            <option selected>Seleziona il metodo di pagamento</option>
-                            <option value="Carta di Credito">Carta di Credito</option>
-                            <option value="PayPal">PayPal</option>
-                            <option value="Bonifico">Bonifico</option>
-                            <option value="Nessuno">Nessuno</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('MetodoPagamento')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                </div>
 
                 <div class="mb-3 row">
                     <div class="col-4">
@@ -201,8 +161,8 @@
                     </div>
                 </div>
 
-                <div class="mb-3 row">
-                    <div class="col-6">
+                <div class="mb-3 row justify-content-center">
+                    <div class="col-4">
                         <label for="data_inizio_contratto" class="form-label ps-2">Data inizio contratto</label>
                         <input type="date" class="form-control @error('data_inizio_contratto') is-invalid @enderror"
                             id="data_inizio_contratto" name="data_inizio_contratto"
@@ -214,7 +174,7 @@
                         </div>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <label for="durata_contratto_mesi" class="form-label ps-2">Durata contratto (mesi)</label>
                         <input type="text" class="form-control @error('durata_contratto_mesi') is-invalid @enderror"
                             id="durata_contratto_mesi" name="durata_contratto_mesi"
@@ -280,7 +240,7 @@
 
                     const div = document.createElement('div');
                     div.className =
-                    'col-3 m-2 form-check'; // Modifica la classe a seconda del tuo stile
+                        'col-3 m-2 form-check'; // Modifica la classe a seconda del tuo stile
                     div.appendChild(label);
                     div.appendChild(checkbox);
                     div.appendChild(dateInput);

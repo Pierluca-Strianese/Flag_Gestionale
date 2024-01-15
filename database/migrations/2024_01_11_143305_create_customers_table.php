@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
 
             $table->string('NomeAzienda',100);
-            $table->string('CF',11);
             $table->string('PIVA',20);
             $table->string('email',20) -> nullable();
             $table->integer('telefono') -> nullable();
@@ -27,8 +26,6 @@ return new class extends Migration
             $table->string('citta',20);
             $table->string('provincia',4);
             $table->string('nazione',20);
-            $table->string('MetodoPagamento',20);
-            $table->string('IBAN',20);
             $table->string('note',100) -> nullable();
 
             $table->integer('pagamento_tot') -> default(0);
@@ -40,6 +37,7 @@ return new class extends Migration
             $table->date('data_fine_contratto')->nullable();
             $table->integer('mesi_trascorsi_contratto')->nullable();
             $table->integer('mesi_mancanti_contratto')->nullable();
+            $table->integer('mesi_mancanti_all_inizio')->nullable();
 
             $table->json('rate_pagate')->nullable();
 

@@ -26,16 +26,6 @@
 
                 <div class="mb-3 row">
                     <div class="col-6">
-                        <label for="CF" class="form-label ps-2">Codice Fiscale</label>
-                        <input type="text" class="form-control @error('CF') is-invalid @enderror" id="CF"
-                            name="CF" value="{{ old('CF', $customer->CF) }}">
-                        <div class="invalid-feedback">
-                            @error('CF')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-6">
                         <div class="mb-3">
                             <label for="PIVA" class="form-label ps-2">P.IVA</label>
                             <input type="text" class="form-control @error('PIVA') is-invalid @enderror" id="PIVA"
@@ -138,36 +128,6 @@
 
             <section class="container-sm bg-body-secondary p-4 my-4 rounded col-8">
                 <h3 class="border-bottom mb-4 pb-2">Pagamento</h3>
-                <div class="mb-3 row">
-                    <div class="col-6">
-                        <label for="IBAN" class="form-label ps-2">IBAN</label>
-                        <input type="text" class="form-control @error('IBAN') is-invalid @enderror" id="IBAN"
-                            name="IBAN" value="{{ old('IBAN', $customer->IBAN) }}">
-                        <div class="invalid-feedback">
-                            @error('IBAN')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <label for="MetodoPagamento" class="form-label ps-2">Metodo di pagamento</label>
-                        <select class="form-select @error('MetodoPagamento') is-invalid @enderror"
-                            aria-label="Default select example" id="MetodoPagamento" name="MetodoPagamento">
-                            <option value="">Seleziona il metodo di pagamento</option>
-                            <option value="Carta di Credito" @if (old('MetodoPagamento', $customer->MetodoPagamento) == 'Carta di Credito') selected @endif>Carta di
-                                Credito</option>
-                            <option value="PayPal" @if (old('MetodoPagamento', $customer->MetodoPagamento) == 'PayPal') selected @endif>PayPal</option>
-                            <option value="Bonifico" @if (old('MetodoPagamento', $customer->MetodoPagamento) == 'Bonifico') selected @endif>Bonifico</option>
-                            <option value="Nessuno" @if (old('MetodoPagamento', $customer->MetodoPagamento) == 'Nessuno') selected @endif>Nessuno</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            @error('MetodoPagamento')
-                                {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-                </div>
 
                 <div class="mb-3 row">
                     <div class="col-4">
@@ -206,12 +166,12 @@
                     </div>
                 </div>
 
-                <div class="mb-3 row">
-                    <div class="col-6">
+                <div class="mb-3 row justify-content-center">
+                    <div class="col-3">
                         <label for="data_inizio_contratto" class="form-label ps-2">Data inizio contratto</label>
                         <input type="date" class="form-control @error('data_inizio_contratto') is-invalid @enderror"
                             id="data_inizio_contratto" name="data_inizio_contratto"
-                            value="{{ old('data_inizio_contratto', $customer->data_inizio_contratto) }}" readonly>
+                            value="{{ old('data_inizio_contratto', $customer->data_inizio_contratto) }}">
                         <div class="invalid-feedback">
                             @error('data_inizio_contratto')
                                 {{ $message }}
@@ -219,11 +179,11 @@
                         </div>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-3">
                         <label for="durata_contratto_mesi" class="form-label ps-2">Durata contratto (mesi)</label>
                         <input type="text" class="form-control @error('durata_contratto_mesi') is-invalid @enderror"
                             id="durata_contratto_mesi" name="durata_contratto_mesi"
-                            value="{{ old('durata_contratto_mesi', $customer->durata_contratto_mesi) }}" readonly>
+                            value="{{ old('durata_contratto_mesi', $customer->durata_contratto_mesi) }}">
                         <div class="invalid-feedback">
                             @error('durata_contratto_mesi')
                                 {{ $message }}
@@ -290,25 +250,25 @@
                     checkbox.className = 'form-check-input';
                     checkbox.checked = isRatePagata(`rata_${i}`, rateObject); // Controlla se la rata è stata pagata
 
-                    // Aggiunto un campo di input per la data di pagamento
-                    const dateInput = document.createElement('input');
-                    dateInput.type = 'date';
-                    dateInput.name = `rate_pagate[rata_${i}][data_pagamento]`;
-                    dateInput.defaultValue = getDateForRate(`rata_${i}`,
-                        rateObject); // Imposta la data di pagamento se presente
-
                     const div = document.createElement('div');
                     div.className = 'col-4 form-check input_rata';
                     div.appendChild(checkbox);
                     div.appendChild(label);
+
+
+                    const dateInput = document.createElement('input');
+                    dateInput.type = 'date';
+                    dateInput.name = `rate_pagate[rata_${i}][data_pagamento]`;
+                    dateInput.value = getDateForRate(`rata_${i}`, rateObject) || '';
                     div.appendChild(dateInput);
+
                     rateContainer.appendChild(div);
-                    // ...
                 }
             }
 
             function getDateForRate(rata, rateObject) {
-                return rateObject && rateObject[rata] && rateObject[rata].data ? rateObject[rata].data : '';
+                return rateObject && rateObject[rata] && rateObject[rata].data_pagamento ? rateObject[rata]
+                    .data_pagamento : '';
             }
 
             function isRatePagata(rata, rateObject) {

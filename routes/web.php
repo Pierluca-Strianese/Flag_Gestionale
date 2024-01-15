@@ -27,7 +27,9 @@ Route::middleware(['auth', 'verified'])
     ->prefix('dashboard')
     ->group(function () {
         Route::resource('customers', CustomerController::class);
-    });
+});
+
+Route::get('/dashboard/customers/index24', 'Admin\CustomerController@index24')->name('dashboard.customers.index24');
 
 Route::middleware('auth')
     ->name('admin.')
