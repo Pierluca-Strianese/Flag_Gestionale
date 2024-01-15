@@ -45,27 +45,33 @@
                     <tr>
                         <th scope="row" class="text-center">{{ $customer->NomeAzienda }}</th>
                         <td class="text-center">{{ $customer->acconto }} €</td>
-                        <td class="text-center">{{ $customer->rata_mensile }}</td>
+                        <td class="text-center">{{ $customer->rata_mensile }} €</td>
                         <td>
                             <div class="d-flex flex-row-reverse">
-                                @for ($i = 1; $i <= 3; $i++)
+                                @php
+                                    $ratePagate = $customer->rate_pagate ?? [];
+                                @endphp
+
+                                {{-- Ciclo per i mesi pagati --}}
+                                @for ($i = 1; $i <= min(3, $customer->mesi_trascorsi_contratto); $i++)
                                     @php
-                                        $ratePagate = $customer->rate_pagate ?? [];
                                         $key = 'rata_' . ($customer->mesi_trascorsi_contratto - ($i - 1));
                                         $rata = $ratePagate[$key] ?? null;
                                         $rataPagata = is_array($rata) && isset($rata['pagata']) ? $rata['pagata'] : false;
                                         $dataPagamento = is_array($rata) && isset($rata['data_pagamento']) ? $rata['data_pagamento'] : null;
                                     @endphp
 
-                                    @if ($customer->mesi_trascorsi_contratto == 0)
-                                        <div class="button_month_empty_passed"></div>
-                                    @else
-                                        <div class="button_month_passed {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
-                                            @if ($dataPagamento)
-                                                {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
-                                            @endif
-                                        </div>
-                                    @endif
+                                    <div
+                                        class="button_month button_month_passed {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
+                                        @if ($dataPagamento)
+                                            {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
+                                        @endif
+                                    </div>
+                                @endfor
+
+                                {{-- Aggiungi div vuoti se ci sono meno di 3 mesi --}}
+                                @for ($i = 1; $i <= 3 - $customer->mesi_trascorsi_contratto; $i++)
+                                    <div class="button_month_empty_passed"></div>
                                 @endfor
                             </div>
                         </td>
@@ -88,9 +94,10 @@
                                     @endphp
 
                                     @if ($i <= $mesiMancantiAllInizio || $i > $mesiMancantiAllInizio + $mesiMancanti)
-                                        <div class="button_month_empty"></div>
+                                        <div class="button_month_empty button_month_empty"></div>
                                     @else
-                                        <div class="button_month_missing {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
+                                        <div
+                                            class="button_month button_month_missing {{ $rataPagata ? 'pagata' : 'non_pagata' }}">
                                             @if ($dataPagamento)
                                                 {{ \Illuminate\Support\Carbon::parse($dataPagamento)->format('d/m') }}
                                             @endif
